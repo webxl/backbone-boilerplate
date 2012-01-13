@@ -2,7 +2,6 @@
 var fs = require("fs");
 var express = require("express");
 var site = express.createServer();
-var WebSocketServer = require('websocket').server
 
 // Determine which dist directory to use
 var dir = process.argv.length > 2 && "./dist/" + process.argv[2];
@@ -21,30 +20,10 @@ site.use(express.favicon("./favicon.ico"));
 
 if (process.argv[2] == '--reload' ||  process.argv.length > 3 && process.argv[3] == '--reload') {
 
-	console.log("Reload task support enabled.");
+	site.use(express.bodyParser());
 
-	wsServer = new WebSocketServer({
-	    httpServer: site,
-	    autoAcceptConnections: true // DON'T use on production!
-	});
+	require('./tasks/reload/socket/serverStub.js').enableSocket(site);
 
-	wsServer.on('connect', function() {
-		console.log((new Date()) + ' Connection accepted.');
-	});
-
-	site.post("/reload", function(req, res) {
-		var fileData = req.data,
-						connections = wsServer.connections;
-
-		for (var i=0;i<connections.length;i++) {
-				connections[i].sendUTF('reload');
-		}
-	});
-
-	// Todo: figure out a better way to handle this
-	site.get("/reload.js", function(req, res) {
-	  fs.createReadStream("./build/tasks/reload/client.js").pipe(res);
-	});
 } else {
 	site.get("/reload.js", function(req, res) {
 	  res.send("// to enable, pass '--reload' to server command");
