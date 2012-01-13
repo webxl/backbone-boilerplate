@@ -1,4 +1,5 @@
 var WebSocketServer = require("websocket").server;
+var fs = require("fs");
 
 exports.enableSocket = function(site) {
 
@@ -24,7 +25,7 @@ exports.enableSocket = function(site) {
 
 	// Todo: figure out a better way to handle this
 	site.get("/reload.js", function(req, res) {
-	  fs.createReadStream("./build/reloadClient.js").pipe(res);
+	  fs.createReadStream(__dirname + "/reloadClient.js").pipe(res);
 	});
 
 }
