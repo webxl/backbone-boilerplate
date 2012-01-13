@@ -27,6 +27,7 @@ $(function() {
 
 				this.socket.onmessage = function (msg) {
 					this.close();
+					console.log(msg.data + ' updated.');
 					window.document.location.reload();
 				}
 				// Todo: reconnect support

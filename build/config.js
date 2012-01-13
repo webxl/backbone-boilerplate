@@ -50,11 +50,7 @@ config.init({
 
   clean: {
     folder: "dist/"
-  },
-
-	reload: {
-		dummy: "grunt requires this why?"
-	}
+  }
 
 });
 
