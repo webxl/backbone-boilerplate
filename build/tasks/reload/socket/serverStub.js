@@ -15,8 +15,8 @@ exports.enableSocket = function(site) {
 	});
 
 	site.post("/reload", function(req, res) {
-		var msg = req.body.file,
-						connections = wsServer.connections;
+		var msg = req.body.message,
+				connections = wsServer.connections;
 
 		for (var i=0;i<connections.length;i++) {
 				connections[i].sendUTF(msg);

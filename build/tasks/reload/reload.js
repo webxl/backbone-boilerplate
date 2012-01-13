@@ -6,11 +6,11 @@ var throttle = false;
 
 task.registerTask("reload", "Reload connected clients when a file has changed.", function (data, name) {
 	var errorcount = fail.errorcount;
-	if (!throttle && this.updatedWatchFile) {
-		task.helper('reload', this.updatedWatchFile);
+	if (!throttle) {
+		task.helper('reload');
 		throttle = true;
 		setTimeout(function() { throttle = false; }, 2000);
-		log.writeln(this.updatedWatchFile + " updated. Reload triggered.");
+		log.writeln("File updated. Reload triggered.");
 	} else {
 		return;
 	}
@@ -24,9 +24,9 @@ task.registerTask("reload", "Reload connected clients when a file has changed.",
 // HELPERS
 // ============================================================================
 
-task.registerHelper("reload", function (file) {
+task.registerHelper("reload", function () {
 	var http = require('http'),
-			fileData = "file=" + file,
+			fileData = "message=File Updated",
 			options = {
 				host:'localhost',
 				port:8000,
